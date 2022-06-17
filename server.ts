@@ -1,5 +1,10 @@
 import { createServer } from 'http';
+import { config } from 'dotenv';
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
+
+config({ path: './.env' });
+
+const port = process.env.PORT;
 
 interface IUsers {
   id: string;
@@ -126,10 +131,6 @@ const server = createServer((request, response) => {
     response.end('');
   }*/
 
-});
-
-const port = process.env.PORT || 5000;
-
-server.listen(port, () => {
+}).listen(port, () => {
   console.log(`Server port is ${port}`);
 });

@@ -12,13 +12,14 @@
     "url": "git+https://github.com/DominickMikka/crud-api.git"
   },
   "keywords": [],
-  "author": "Darozhka Mihail",
+  "author": "Darozhka Mikhail",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/DominickMikka/crud-api/issues"
   },
   "homepage": "https://github.com/DominickMikka/crud-api#readme",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
