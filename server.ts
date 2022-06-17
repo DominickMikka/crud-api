@@ -8,9 +8,6 @@ interface IUsers {
   hobbies: string[]; 
 }
 
-const users: Array<IUsers> = [];
-//const users: object[] = [];
-
 interface IUser {
 	id: string;
 	username: string;
@@ -18,6 +15,7 @@ interface IUser {
   hobbies: string[]; 
 }
 
+const users: Array<IUsers> = [];
 
 const server = createServer((request, response) => {
   let body = '';
@@ -28,26 +26,67 @@ const server = createServer((request, response) => {
   const isUuid: boolean = uuidValidate(userId as string);
 
   if (url && isUuid && request.method === 'GET') {
+    let isUserExists = false;
 
     users.forEach((element) => {
       if (element.id === userId) {
         response.writeHead(200, {'Content-Type': 'text/json'});
         response.write(JSON.stringify(element));
         response.end();
+        isUserExists = true;
       }
     });
+
+    if (!isUserExists) {
+      response.writeHead(404, {'Content-Type': 'text/json'});
+      response.end('This user doesn\'t exists!');
+    }
     
-  } else
+  } else 
+  
+  if (url && !isUuid && request.method === 'GET') {
+    response.writeHead(400, {'Content-Type': 'text/json'});
+    response.end('User ID invalid!');
+  }
+
+  if (url && request.method === 'PUT') {
+
+    if (!isUuid) {
+      response.writeHead(404, {'Content-Type': 'text/json'});
+      response.end('User ID invalid!');
+    } else {
+
+      let isUserExists = false;
+
+      request.on('data', (chunk: Buffer) => {
+        body += chunk.toString();
+      });
+  
+      request.on('end', () => {
+        users.forEach((element) => {
+  
+          if (element.id === userId) {
+            Object.assign(element, JSON.parse(body));
+            response.writeHead(200, {'Content-Type': 'text/json'});
+            response.end();
+            isUserExists = true;
+          }
+        });
+  
+        if (!isUserExists) {
+          response.writeHead(400, {'Content-Type': 'text/json'});
+          response.end('No contains required fields');
+        }
+      });
+    }
+  }
 
   if (request.url === '/api/user' && request.method === 'POST') {
     
-
     request.on('data', (chunk: Buffer) => {
       body += chunk.toString();
-      console.log(body);
     });
 
-    
     request.on('end', () => {
       try {
         const { username, age, hobbies } = JSON.parse(body);
@@ -80,12 +119,12 @@ const server = createServer((request, response) => {
     }
     
     response.end();
-  } else 
+  } /*else 
   
   {
     response.writeHead(404, {'Content-Type': 'text/html'});
     response.end('');
-  }
+  }*/
 
 });
 
