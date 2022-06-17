@@ -1,30 +1,58 @@
 import { createServer } from 'http';
-import { v4 as uuidv4 } from 'uuid';
-
-let users: object[] = [];
+import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 
 interface IUsers {
+  id: string;
+  username: string;
+  age: number;
+  hobbies: string[]; 
+}
+
+const users: Array<IUsers> = [];
+//const users: object[] = [];
+
+interface IUser {
 	id: string;
 	username: string;
 	age: number;
-  hobbies: string[];
+  hobbies: string[]; 
 }
 
+
 const server = createServer((request, response) => {
-  
-  let body: string = '';
+  let body = '';
+
+  const route = request.url;
+  const url = route?.includes('/api/users/$%7B');
+  const userId = route?.slice(15, route.length - 3);
+  const isUuid: boolean = uuidValidate(userId as string);
+
+  if (url && isUuid && request.method === 'GET') {
+
+    users.forEach((element) => {
+      if (element.id === userId) {
+        response.writeHead(200, {'Content-Type': 'text/json'});
+        response.write(JSON.stringify(element));
+        response.end();
+      }
+    });
+    
+  } else
 
   if (request.url === '/api/user' && request.method === 'POST') {
     
-    request.on('data', (chunk) => {
-      body += chunk.toString();
-    })
 
+    request.on('data', (chunk: Buffer) => {
+      body += chunk.toString();
+      console.log(body);
+    });
+
+    
     request.on('end', () => {
       try {
         const { username, age, hobbies } = JSON.parse(body);
 
-        const user: IUsers = {
+        const user: IUser = {
           id: uuidv4(),
           username,
           age,
@@ -37,6 +65,7 @@ const server = createServer((request, response) => {
         response.end();
 
       } catch(error) {
+        console.log(error);
         response.writeHead(400, {'Content-Type': 'text/json'});
         response.end('No contains required fields');
       }
@@ -51,12 +80,14 @@ const server = createServer((request, response) => {
     }
     
     response.end();
-  } else {
+  } else 
+  
+  {
     response.writeHead(404, {'Content-Type': 'text/html'});
     response.end('');
   }
 
-})
+});
 
 const port = process.env.PORT || 5000;
 
