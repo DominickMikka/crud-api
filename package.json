@@ -5,7 +5,7 @@
   "main": "./server.js",
   "scripts": {
     "start:prod": "tsc ./server.ts && node ./server.js",
-    "start:dev": "nodemon --watch ./server.ts"
+    "start:dev": "nodemon ./server.ts"
   },
   "repository": {
     "type": "git",
