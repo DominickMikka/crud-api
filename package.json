@@ -5,7 +5,7 @@
   "main": "./server.js",
   "scripts": {
     "start:prod": "tsc ./server.ts && node ./server.js",
-    "start:dev": "nodemon ./server.ts"
+    "start:dev": "nodemon --watch ./server.ts"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/DominickMikka/crud-api#readme",
   "dependencies": {
+    "@types/node": "^18.0.0",
     "dotenv": "^16.0.1",
     "uuid": "^8.3.2"
   },
