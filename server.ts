@@ -73,7 +73,7 @@ createServer((request, response) => {
   } else
 
   if (route === '/api/users') {
-
+    
     if (checkMethod(method, 'GET')) {
       getAllUsers(response, users);
     } else {

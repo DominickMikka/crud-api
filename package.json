@@ -20,6 +20,7 @@
   "homepage": "https://github.com/DominickMikka/crud-api#readme",
   "dependencies": {
     "@types/node": "^18.0.0",
+    "@types/supertest": "^2.0.12",
     "dotenv": "^16.0.1",
     "uuid": "^8.3.2"
   },
@@ -28,6 +29,7 @@
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
     "nodemon": "^2.0.16",
+    "supertest": "^6.2.3",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   }
